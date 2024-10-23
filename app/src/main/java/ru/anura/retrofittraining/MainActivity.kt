@@ -18,6 +18,7 @@ import ru.anura.retrofittraining.databinding.AuthBinding
 import ru.anura.retrofittraining.databinding.LayoutWithRvBinding
 import ru.anura.retrofittraining.retrofit.AuthRequest
 import ru.anura.retrofittraining.retrofit.MainApi
+import ru.anura.retrofittraining.retrofit.User
 
 class MainActivity : AppCompatActivity() {
     //private lateinit var binding: ActivityMainBinding
@@ -52,10 +53,26 @@ class MainActivity : AppCompatActivity() {
             .build()
         val mainApi = retrofit.create(MainApi::class.java)
 
+        var user: User? = null
+
+        CoroutineScope(Dispatchers.IO).launch {
+            user = mainApi.auth(
+                AuthRequest(
+                    "emilys",
+                    "emilyspass"
+                )
+            )
+            runOnUiThread {
+                supportActionBar?.title = user?.firstName
+            }
+        }
+
+
         binding.sv.setOnQueryTextListener(object : OnQueryTextListener{
             override fun onQueryTextSubmit(text: String?): Boolean {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val list = text?.let { mainApi.getProductsByName(it) }
+                    //val list = text?.let { mainApi.getProductsByName(it) }
+                    val list = text?.let { mainApi.getProductsByNameAuth(user?.accessToken ?: "", it) }
                     runOnUiThread {
                         binding.apply {
                             adapter.submitList(list?.products)
