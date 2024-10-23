@@ -2,10 +2,8 @@ package ru.anura.retrofittraining
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,15 +11,19 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.anura.retrofittraining.databinding.ActivityMainBinding
-import ru.anura.retrofittraining.retrofit.ProductApi
+import ru.anura.retrofittraining.databinding.AuthBinding
+import ru.anura.retrofittraining.retrofit.AuthRequest
+import ru.anura.retrofittraining.retrofit.MainApi
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    //private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: AuthBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        //setContentView(R.layout.activity_main)
+        setContentView(R.layout.auth)
+        //binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = AuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val interceptor = HttpLoggingInterceptor()
@@ -37,17 +39,26 @@ class MainActivity : AppCompatActivity() {
             .client(client) //подключение okhttp
             .addConverterFactory(GsonConverterFactory.create())//фабрика будет преобразовывать в data class
             .build()
-        val productApi = retrofit.create(ProductApi::class.java)
+        val mainApi = retrofit.create(MainApi::class.java)
 
 
 
         binding.button.setOnClickListener {
             Log.d("CheckingProduct","CLICKED")
             CoroutineScope(Dispatchers.IO).launch {
-                val product = productApi.getProductById(3)
-                Log.d("CheckingProduct","product: $product")
+                val user = mainApi.auth(
+                    AuthRequest(
+                        binding.username.text.toString(),
+                        binding.password.text.toString()
+                    )
+                )
+                //val product = mainApi.getProductById(3)
                 runOnUiThread {
-                    binding.tv.text = product.title
+                    binding.apply {
+                        Picasso.get().load(user.image).into(iv)
+                        firstName.text = user.firstName
+                        lastName.text = user.lastName
+                    }
                 }
             }
         }
