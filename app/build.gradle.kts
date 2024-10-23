@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "ru.anura.recipeapp"
+    namespace = "ru.anura.retrofittraining"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "ru.anura.recipeapp"
+        applicationId = "ru.anura.retrofittraining"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -45,4 +45,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation ("com.squareup.picasso:picasso:2.8")
 }

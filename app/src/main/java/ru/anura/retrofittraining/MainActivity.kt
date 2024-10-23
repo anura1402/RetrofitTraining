@@ -1,4 +1,4 @@
-package ru.anura.recipeapp
+package ru.anura.retrofittraining
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

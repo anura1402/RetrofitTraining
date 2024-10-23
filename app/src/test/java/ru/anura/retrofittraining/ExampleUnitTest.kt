@@ -1,4 +1,4 @@
-package ru.anura.recipeapp
+package ru.anura.retrofittraining
 
 import org.junit.Test
 

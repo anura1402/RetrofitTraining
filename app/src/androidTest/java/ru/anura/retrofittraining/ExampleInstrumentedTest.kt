@@ -1,4 +1,4 @@
-package ru.anura.recipeapp
+package ru.anura.retrofittraining
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
