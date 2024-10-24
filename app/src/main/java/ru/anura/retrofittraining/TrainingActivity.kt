@@ -1,11 +1,9 @@
 package ru.anura.retrofittraining
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,13 +12,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.anura.retrofittraining.adapter.ProductAdapter
-import ru.anura.retrofittraining.databinding.AuthBinding
 import ru.anura.retrofittraining.databinding.LayoutWithRvBinding
 import ru.anura.retrofittraining.retrofit.AuthRequest
 import ru.anura.retrofittraining.retrofit.MainApi
 import ru.anura.retrofittraining.retrofit.User
 
-class MainActivity : AppCompatActivity() {
+class TrainingActivity : AppCompatActivity() {
     //private lateinit var binding: ActivityMainBinding
     //private lateinit var binding: AuthBinding
     private lateinit var binding: LayoutWithRvBinding
@@ -56,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         var user: User? = null
 
         CoroutineScope(Dispatchers.IO).launch {
-            user = mainApi.auth(
+            user = mainApi.authSimpleUser(
                 AuthRequest(
                     "emilys",
                     "emilyspass"

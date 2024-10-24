@@ -1,5 +1,6 @@
 package ru.anura.retrofittraining.retrofit
 
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -13,10 +14,15 @@ interface MainApi {
     suspend fun getProductById(@Path("id") id: Int): Product
 
     @POST("auth/login")
-    suspend fun auth(@Body authRequest: AuthRequest): User
+    suspend fun auth(@Body authRequest: AuthRequest): Response<User>
+    @POST("auth/login")
+    suspend fun authSimpleUser(@Body authRequest: AuthRequest): User
 
     @GET("products")
     suspend fun getProducts(): Products
+    @Headers("Content-Type: application/json")
+    @GET("auth/products")
+    suspend fun getAllProductsAuth(@Header("Authorization") token: String): Products
 
     @GET("products/search")
     suspend fun getProductsByName(@Query("q") name:String) : Products
@@ -25,4 +31,5 @@ interface MainApi {
     @GET("auth/products/search")
     suspend fun getProductsByNameAuth(@Header("Authorization") token: String,
                                       @Query("q") name: String): Products
+
 }
