@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +55,23 @@ class ProductsFragment : Fragment() {
                     adapter.submitList(list.products)
                 }
             }
+            binding.sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(text: String?): Boolean {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val list = text?.let { mainApi.getProductsByNameAuth(token, it) }
+                        requireActivity().runOnUiThread {
+                            binding.apply {
+                                adapter.submitList(list?.products)
+                            }
+                        }
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(text: String?): Boolean {
+                    return true
+                }
+            })
         }
     }
 
